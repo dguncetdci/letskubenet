@@ -1,0 +1,15 @@
+Step-07: Clean-Up
+# Get all Objects in default namespace
+kubectl get all
+
+# Delete Services
+kubectl delete svc mynetsample
+
+# Delete Deployment
+kubectl delete deployment mynetsample-deployment
+
+# Delete Pod
+kubectl delete pod my-first-pod
+
+# Get all Objects in default namespace
+kubectl get all
