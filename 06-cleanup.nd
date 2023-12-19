@@ -1,0 +1,23 @@
+Step-07: Clean-Up
+# Get all Objects in default namespace
+kubectl get all
+
+# Delete Services
+kubectl delete svc mynetsample
+
+# Delete Deployment
+kubectl delete deployment mynetsample-deployment
+
+# Delete Pod
+kubectl delete pod my-first-pod
+
+# Get all Objects in default namespace
+kubectl get all
+
+
+Steps
+Delete the resource groups as a way to delete all contained Azure resources.
+
+⚠️ Ensure you are using the correct subscription, and validate that the only resources that exist in these groups are ones you're okay deleting.
+
+az group delete -n $AZ_RESOURCE_GROUP
