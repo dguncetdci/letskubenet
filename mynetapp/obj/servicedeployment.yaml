@@ -1,0 +1,9 @@
+kind: Service
+metadata:
+  name: mynetsample-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: mynetsample
