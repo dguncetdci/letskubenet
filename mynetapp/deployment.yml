@@ -14,7 +14,7 @@ spec:
     spec:
             containers:
             - name: mynetsample
-              image: acrdiversedemo.azurecr.us/sample:latest
+              image: acrdiversesample.azurecr.us/mynetapp:latest
               ports:
               - containerPort: 80
               resources:
