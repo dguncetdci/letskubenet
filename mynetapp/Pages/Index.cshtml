@@ -1,5 +1,7 @@
-﻿@page
+﻿
+@page
 @model IndexModel
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     ViewData["Title"] = "Home page";
 }
@@ -7,4 +9,8 @@
 <div class="text-center">
     <h1 class="display-4">Welcome to containers</h1>
      <p>Hostname: @Environment.GetEnvironmentVariable("HOSTNAME")</p>
+    
+    <p><b>Message</b>: @Configuration["Message"]</p>
+    
+    <p><b>Application Version</b>: @Configuration["Version"]</p>
 </div>
