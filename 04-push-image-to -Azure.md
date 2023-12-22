@@ -16,6 +16,7 @@ export AZ_CONTAINER_REGISTRY="acrdiversesample"
 export AZ_KUBERNETES_CLUSTER="aksdiverse"
 export AZ_LOCATION="usgovvirginia"
 export AZ_KUBERNETES_CLUSTER_DNS_PREFIX="deiverse-demo-cluster"
+export AZ_IMAGE="mynetapp"
 
 az login
 az acr login -n $AZ_CONTAINER_REGISTRY

@@ -40,7 +40,8 @@ export AZ_RESOURCE_GROUP="rg-diverse-aks"
 export AZ_CONTAINER_REGISTRY="acrdiversesample"
 export AZ_KUBERNETES_CLUSTER="aksdiverse"
 export AZ_LOCATION="usgovvirginia"
-export AZ_KUBERNETES_CLUSTER_DNS_PREFIX="deiverse-demo-cluster"
+export AZ_KUBERNETES_CLUSTER_DNS_PREFIX="diverse-demo-cluster"
+export AZ_IMAGE="mynetapp"
 ```
 
 ### 3. Create an Azure Resource Group
