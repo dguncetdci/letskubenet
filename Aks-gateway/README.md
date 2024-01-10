@@ -40,14 +40,32 @@ az extension add -n k8s-extension --upgrade
 az extension list -o table
 ```
 
-## Install Flux v2
-
+## Create Resource Group and Aks Cluster with Gateway
+###Deploy a cluster with an AppGW Ingress Controller for application access
 ```bash
 export AZ_RESOURCE_GROUP="AKS-Cloud-AppGateway"
 export AZ_KUBERNETES_CLUSTER="AKSClusterAppGateway"
 export AZ_LOCATION="usgovvirginia"
-export AZ_KEY_VAULT="akvdemosecret"
- 
+
+az group create --name $AZ_RESOURCE_GROUP --location $AZ_LOCATION
+
+```
+####Create a cluster with the AppGW Ingress addon
+```bash
+az aks create \
+    --resource-group $AZ_RESOURCE_GROUP  \
+    --name $AZ_KUBERNETES_CLUSTER \
+    --network-plugin azure \
+    --enable-managed-identity \
+    --enable-addon ingress-appgw \
+    --appgw-name aks-appgw \
+    --appgw-subnet-cidr "10.225.0.0/16" \
+    --generate-ssh-keys
+```
+## Install Flux v2
+
+```bash
+
 # list installed extensions
 az k8s-extension list -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -t managedClusters
  
@@ -56,8 +74,10 @@ az k8s-extension list -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -t managed
 # this extension will be installed with cluster-wide scope
  
 az k8s-extension create -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -n flux --extension-type microsoft.flux -t managedClusters --auto-upgrade-minor-version true
+```
 
-#add keyvault 
+### add keyvault This Part Hasn't been tested and need aditional configuration.
+```bash
 #https://learn.microsoft.com/en-us/azure/azure-arc/kubernetes/quickstart-connect-cluster?tabs=azure-cli
 az extension add --name connectedk8s
 az provider register --namespace Microsoft.Kubernetes
@@ -75,14 +95,18 @@ az keyvault update -n $AZ_KEY_VAULT -g $AZ_RESOURCE_GROUP -l eastus --enable-rba
 az keyvault secret set --vault-name $AZ_KEY_VAULT -n DemoSecret --value MyAKSExampleSecret
 
 az k8s-extension create --cluster-name $AZ_KUBERNETES_CLUSTER --resource-group $AZ_RESOURCE_GROUP --cluster-type connectedClusters --extension-type Microsoft.AzureKeyVaultSecretsProvider --name akvsecretsprovider
- 
+ ```
 # list Kubernetes namespaces; there should be a flux-system namespace
+```bash
 kubectl get ns
  
 # get pods in the flux-system namespace
 kubectl get pods -n flux-system
 ```
-
+## Create a Flux configuration
+```bash
+az k8s-configuration flux create -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -t managedClusters --name example -u https://github.com/dguncetdci/letskubenet.git --branch main -k name=app path=./manifests
+```
 ## Create a Flux configuration
 
 ⚠️ If you want to create a configuration **FROM THE GROUND UP** skip this section. The next section creates a new public git repo allowing us to add our own Flux configuration. The one in this section, uses a Microsoft sample repo.
@@ -326,4 +350,3 @@ flux get kustomization cluster-config-apps -n cluster-config
 
 
 
-az k8s-configuration flux create -g AKS-Cloud-AppGateway -c AKSClusterAppGW -t managedClusters --name example -u https://github.com/dguncetdci/letskubenet.git --branch main -k name=app path=./manifests
