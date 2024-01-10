@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mynetsample
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mynetsample
+  template:
+    metadata:
+      labels:
+        app: mynetsample
+    spec:
+            containers:
+            - name: mynetsample
+              image: dguncetdiverse/mynetapp
+              ports:
+              - containerPort: 80
+              resources:
+                limits:
+                  cpu: "0.5"
+                  memory: "512Mi"
+                requests:
+                  cpu: "0.1"
+                  memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mynetsample
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: mynetsample
+---
