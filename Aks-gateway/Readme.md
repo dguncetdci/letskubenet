@@ -41,7 +41,8 @@ export AZ_LOCATION="usgovvirginia"
 az group create --name $AZ_RESOURCE_GROUP --location $AZ_LOCATION
 
 ```
-####Create a cluster with the AppGW Ingress addon
+## Create a cluster with the AppGW Ingress addon
+
 ```bash
 az aks create \
     --resource-group $AZ_RESOURCE_GROUP  \
@@ -63,10 +64,14 @@ az k8s-extension list -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -t managed
 # install flux; note that the name (-n) is a name you choose for
 # the extension instance; the command will take some time
 # this extension will be installed with cluster-wide scope
- 
-az k8s-extension create -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -n flux --extension-type microsoft.flux -t managedClusters --auto-upgrade-minor-version true
 ```
 
+
+## Install flux 
+
+```bash 
+az k8s-extension create -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -n flux --extension-type microsoft.flux -t managedClusters --auto-upgrade-minor-version true
+```
 # list Kubernetes namespaces; there should be a flux-system namespace
 ```bash
 kubectl get ns
@@ -74,7 +79,8 @@ kubectl get ns
 # get pods in the flux-system namespace
 kubectl get pods -n flux-system
 ```
-## Create a Flux configuration
+
+## Install net sample application using flux and gitops
 ```bash
 az k8s-configuration flux create -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -t managedClusters --name example -u https://github.com/dguncetdci/letskubenet.git --branch main -k name=app path=./manifests
 ```
