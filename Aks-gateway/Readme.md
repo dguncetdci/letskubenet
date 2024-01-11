@@ -72,7 +72,7 @@ az k8s-extension list -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -t managed
 ```bash 
 az k8s-extension create -g $AZ_RESOURCE_GROUP -c $AZ_KUBERNETES_CLUSTER -n flux --extension-type microsoft.flux -t managedClusters --auto-upgrade-minor-version true
 ```
-# list Kubernetes namespaces; there should be a flux-system namespace
+## list Kubernetes namespaces; there should be a flux-system namespace
 ```bash
 kubectl get ns
  
